@@ -16,6 +16,8 @@ public class Sphere_script : MonoBehaviour
 
     public Vector3 sphereNormal;
 
+    public float mass;
+
     // Start is called before the first frame update
     void Start()
     {
