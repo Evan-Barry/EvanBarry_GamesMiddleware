@@ -16,7 +16,9 @@ public class Sphere_script : MonoBehaviour
 
     public Vector3 sphereNormal;
 
-    public float mass;
+    public float mass = 1;
+    public Vector3 para;
+    public Vector3 perp;
 
     // Start is called before the first frame update
     void Start()
@@ -48,15 +50,15 @@ public class Sphere_script : MonoBehaviour
         if (d2 <= 0)
         {
             //Debug.Log("D2 <= 0");
-            Vector3 para = parallel_component(velocity, plane.normal);
-            Vector3 perp = perpendicular_component(velocity, plane.normal);
+            para = parallel_component(velocity, plane.normal);
+            perp = perpendicular_component(velocity, plane.normal);
 
             float time_of_impact = Time.deltaTime * (d1 / (d1 - d2)); 
-            transform.position -= velocity * (Time.deltaTime - time_of_impact);
+            transform.position -= velocity * (Time.deltaTime - time_of_impact); //error here at random times
 
             velocity = perp - (Coefficient_of_Restitution * para);
 
-            transform.position += velocity * (Time.deltaTime - time_of_impact);
+            transform.position += velocity * (Time.deltaTime - time_of_impact);//error here at random times
 
             // float overlap = Radius_of_sphere - distance_from_centre_to_plane;
             // transform.position += overlap * plane.normal;
@@ -72,13 +74,13 @@ public class Sphere_script : MonoBehaviour
         //     Debug.Log("Spheres Colliding");
         //     Vector3 pointOfImpact = transform.position + (R * sphereNormal);
 
-            //Vector3 newPara = (((sphereNormal - nearestSphere.sphereNormal)/(sphereNormal + nearestSphere.sphereNormal)) * parallel_component(velocity, sphereNormal)) + (((2 * nearestSphere.sphereNormal)/(sphereNormal + nearestSphere.sphereNormal)) * parallel_component(nearestSphere.velocity, nearestSphere.sphereNormal));
+        //     Vector3 newPara = newV1Parallel(mass, nearestSphere.mass, para, nearestSphere.para);
 
-            //velocity = perpendicular_component(velocity, sphereNormal) + (Coefficient_of_Restitution * newPara);
+        //     velocity = perpendicular_component(velocity, sphereNormal) + (Coefficient_of_Restitution * newPara);
 
-            //transform.position += velocity * Time.deltaTime;
+        //     transform.position += velocity * Time.deltaTime;
 
-        //}
+        // }
     }
     public Vector3 perpendicular_component(Vector3 vel, Vector3 norm)
     {
@@ -111,4 +113,5 @@ public class Sphere_script : MonoBehaviour
             }
         }
     }
+
 }

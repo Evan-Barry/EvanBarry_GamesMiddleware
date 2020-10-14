@@ -30,7 +30,7 @@ public class objectManagerScript : MonoBehaviour
         planes = FindObjectsOfType(typeof(Plane_script)) as Plane_script[];
         spheres = FindObjectsOfType(typeof(Sphere_script)) as Sphere_script[];
 
-        planes[0].define_plane(new Vector3(0, -2, 0), new Vector3(-0.02f, 1, 0.02f));
+        planes[0].define_plane(new Vector3(0, -2, 0), new Vector3(0.05f, 1, 0.05f));
         planes[1].define_plane(new Vector3(5, 0, 0), new Vector3(-1, 0, 0));
         planes[2].define_plane(new Vector3(-5, 0, 0), new Vector3(1, 0, 0));
         planes[3].define_plane(new Vector3(0, 0, 5), new Vector3(0, 0, -1));
@@ -81,17 +81,17 @@ public class objectManagerScript : MonoBehaviour
             s1_point_of_impact = s1.transform.position + (R * s1Normal);
             s2_point_of_impact = s2.transform.position - (r * s2Normal);
 
-            //Move spheres back (problem)
+            //Move spheres back
             s1.transform.position -= (s1.velocity * Time.deltaTime);
             s2.transform.position -= (s2.velocity * Time.deltaTime);
 
             //Calculate new Para for S1 velocity after collision and aplly to the velocity
             Vector3 newV1Para = newV1Parallel(mass1, mass2, s1Para, s2Para);
-            s1.velocity = s1Perp - (Coefficient_of_Restitution * newV1Para);
+            s1.velocity = s1Perp + (Coefficient_of_Restitution * newV1Para);
 
             //Calculate new Para for S2 velocity after collision and aplly to the velocity
             Vector3 newV2Para = newV2Parallel(mass1, mass2, s1Para, s2Para);
-            s2.velocity = s2Perp - (Coefficient_of_Restitution * newV2Para);
+            s2.velocity = s2Perp + (Coefficient_of_Restitution * newV2Para);
 
             //Move the spheres with new velocity (Point of impact needed?)
             s1.transform.position -= (s1.velocity * Time.deltaTime);
