@@ -1,5 +1,5 @@
 sceneSetups:
-- path: Assets/blenTreeTutorial.unity
+- path: Assets/Scenes/blenTreeTutorial.unity
   isLoaded: 1
   isActive: 1
   isSubScene: 0
