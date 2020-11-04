@@ -21,12 +21,17 @@ public class IdleToCrouch : MonoBehaviour
 
         if(name == "Player")
         {
-            head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head/mixamorig:HeadTop_End");
+            head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
         }
 
         else if(name == "Zombie1")
         {
             head = GameObject.Find("/Zombie1/Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanRibcage/Base HumanNeck/Base HumanHead");
+        }
+
+        else if(name == "BaseHumanoidBotAvatar_Tpose")
+        {
+            head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
         }
 
         h = Instantiate(hat, head.transform.position, Quaternion.identity) as GameObject;
