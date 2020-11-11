@@ -13,6 +13,10 @@ public class IdleToCrouch : MonoBehaviour
     GameObject h;
 
     public GameObject head;
+
+    public bool ikActive = true;
+    //public Transform headObj = null;
+    public Transform lookObj = null;
     
     // Start is called before the first frame update
     void Start()
@@ -34,28 +38,58 @@ public class IdleToCrouch : MonoBehaviour
             head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
         }
 
-        h = Instantiate(hat, head.transform.position, Quaternion.identity) as GameObject;
-        h.transform.parent = transform;
+        h = Instantiate(hat, new Vector3(head.transform.position.x, head.transform.position.y + 0.1f, head.transform.position.z + 0.03f), Quaternion.identity) as GameObject;
+        h.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        h.transform.parent = head.transform;
+        //headObj = h.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
         //h.transform.position = transform.position;
-
-        inputY = Input.GetAxis("Vertical");
-        inputX = Input.GetAxis("Horizontal");
-        animator.SetFloat("InputY", inputY);
-        animator.SetFloat("InputX", inputX);
-        
-        if(Input.GetMouseButtonDown(0))
+        if(transform.tag == "Player")
         {
-            animator.SetTrigger("Action");
-        }
+            inputY = Input.GetAxis("Vertical");
+            inputX = Input.GetAxis("Horizontal");
+            animator.SetFloat("InputY", inputY);
+            animator.SetFloat("InputX", inputX);
+            
+            if(Input.GetMouseButtonDown(0))
+            {
+                animator.SetTrigger("Action");
+            }
 
-        if(Input.GetKeyDown(KeyCode.X))
-        {
-            animator.SetTrigger("Death");
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                animator.SetTrigger("Death");
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                animator.SetTrigger("taunt1");
+            }
         }
     }
+
+    void OnAnimatorIK()
+    {
+        if(animator)
+        {
+            if(ikActive)
+            {
+                if(lookObj != null)
+                {
+                    animator.SetLookAtWeight(1);
+                    animator.SetLookAtPosition(lookObj.position);
+                }
+            }
+
+            else
+            {
+                animator.SetLookAtWeight(0);
+            }
+        }
+    }
+
 }
