@@ -2,8 +2,10 @@ ScriptsOnlyBuild:
   usedScripts:
     Assembly-CSharp.dll:
     - IdleToCrouch
+    - netAnimation
     - playerScript
     Mirror.Components.dll:
+    - Mirror.NetworkAnimator
     - Mirror.NetworkTransform
     Mirror.dll:
     - Mirror.NetworkIdentity
@@ -45,6 +47,8 @@ ScriptsOnlyBuild:
       Script: {instanceID: 0}
     - Class: 64
       Script: {instanceID: 0}
+    - Class: 65
+      Script: {instanceID: 0}
     - Class: 74
       Script: {instanceID: 0}
     - Class: 81
@@ -70,11 +74,15 @@ ScriptsOnlyBuild:
     - Class: 114
       Script: {instanceID: 12848}
     - Class: 114
+      Script: {instanceID: 13426}
+    - Class: 114
       Script: {instanceID: 14120}
     - Class: 114
-      Script: {instanceID: 14342}
+      Script: {instanceID: 14276}
     - Class: 114
-      Script: {instanceID: 14720}
+      Script: {instanceID: 14344}
+    - Class: 114
+      Script: {instanceID: 14722}
     - Class: 115
       Script: {instanceID: 0}
     - Class: 137
@@ -912,6 +920,12 @@ ScriptsOnlyBuild:
     assemblyName: Unity.Timeline.dll
     namespaceName: UnityEngine.Timeline
     className: MarkerTrack
+  - hash:
+      serializedVersion: 2
+      Hash: bee1ca9b542f5389d012757351e4e9d1
+    assemblyName: Assembly-CSharp.dll
+    namespaceName: 
+    className: netAnimation
   - hash:
       serializedVersion: 2
       Hash: 9b5a106d716e10dbf0635b1180cc5e67

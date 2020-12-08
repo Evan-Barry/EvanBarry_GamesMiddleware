@@ -227,7 +227,7 @@ GameObject:
   - component: {fileID: 481994957}
   m_Layer: 0
   m_Name: startingPoint2
-  m_TagString: Untagged
+  m_TagString: playerSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -364,7 +364,8 @@ MonoBehaviour:
   playerPrefab: {fileID: 1544551922875369888, guid: c82b31e6200c4db4fb2af0ffec259fdd, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 1
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 5021863079575086404, guid: bc319761959f08045ad5f58e6f928735, type: 3}
 --- !u!4 &504187571
 Transform:
   m_ObjectHideFlags: 0
@@ -474,7 +475,7 @@ GameObject:
   - component: {fileID: 1866111899}
   m_Layer: 0
   m_Name: startingPoint1
-  m_TagString: Untagged
+  m_TagString: playerSpawn
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

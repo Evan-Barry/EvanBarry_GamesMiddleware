@@ -23,24 +23,24 @@ public class IdleToCrouch : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        if(name == "Player")
-        {
-            head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
-        }
+        // if(name == "Player")
+        // {
+        //     head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
+        // }
 
-        else if(name == "Zombie1(Clone)")
-        {
-            head = GameObject.Find("/Zombie1(Clone)/Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanRibcage/Base HumanNeck/Base HumanHead");
-        }
+        // else if(tag == "zombie")
+        // {
+        //     head = GameObject.Find("/" + name + "/Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanRibcage/Base HumanNeck/Base HumanHead");
+        // }
 
-        else if(name == "BaseHumanoidBotAvatar_Tpose")
-        {
-            head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
-        }
+        // else if(name == "BaseHumanoidBotAvatar_Tpose")
+        // {
+        //     head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
+        // }
 
-        h = Instantiate(hat, new Vector3(head.transform.position.x, head.transform.position.y + 0.1f, head.transform.position.z + 0.03f), Quaternion.identity) as GameObject;
-        h.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-        h.transform.parent = head.transform;
+        // h = Instantiate(hat, new Vector3(head.transform.position.x, head.transform.position.y + 0.1f, head.transform.position.z + 0.03f), Quaternion.identity) as GameObject;
+        // h.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        // h.transform.parent = head.transform;
         //headObj = h.transform;
     }
 
@@ -54,7 +54,7 @@ public class IdleToCrouch : MonoBehaviour
             inputX = Input.GetAxis("Horizontal");
             animator.SetFloat("InputY", inputY);
             animator.SetFloat("InputX", inputX);
-            
+
             if(Input.GetMouseButtonDown(0))
             {
                 animator.SetTrigger("Action");

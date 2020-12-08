@@ -14,6 +14,8 @@ public class playerScript : NetworkBehaviour
     {
         if (!isLocalPlayer) { return; }
 
+        Debug.Log("isLocalPlayer" + transform.name);
+
         float moveX = Input.GetAxis("Horizontal") * Time.deltaTime * 110.0f;
         float moveZ = Input.GetAxis("Vertical") * Time.deltaTime * 4f;
 
