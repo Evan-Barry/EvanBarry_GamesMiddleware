@@ -8,101 +8,88 @@ public class netAnimation : NetworkBehaviour
 
     public Animator animator;
     public NetworkAnimator netAnimator;
-    public bool attack = false;
+    public bool action = false;
     public float inputX, inputY;
 
-    public GameObject hat;
-    GameObject h;
-
-    public GameObject head;
-
     public bool ikActive = true;
-    //public Transform headObj = null;
     public Transform lookObj = null;
+
+    public GameObject objectPrefab;
+
+    //public GameObject[] cubes;
 
     // Start is called before the first frame update
     void Awake()
     {
         animator = GetComponent<Animator>();
         netAnimator = GetComponent<NetworkAnimator>();
+    }
 
-        // if(name == "Player")
-        // {
-        //     head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
-        // }
-
-        // else if(tag == "zombie")
-        // {
-        //     head = GameObject.Find("/" + name + "/Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanRibcage/Base HumanNeck/Base HumanHead");
-        // }
-
-        // else if(name == "BaseHumanoidBotAvatar_Tpose")
-        // {
-        //     head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
-        // }
-
-        // h = Instantiate(hat, new Vector3(head.transform.position.x, head.transform.position.y + 0.1f, head.transform.position.z + 0.03f), Quaternion.identity) as GameObject;
-        // h.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
-        // h.transform.parent = head.transform;
-        //headObj = h.transform;
+    public override void OnStartLocalPlayer()
+    {
+        Camera.main.transform.SetParent(transform);
+        Camera.main.transform.localPosition = new Vector3(0, 2, -2);
+        //Camera.main.transform.localRotation = new Quaternion(20, 0, 0, 0);
     }
 
     void Update()
     {
-        checkAttack();
-    }
-
-    // Update is called once per frame
-    void FixedUpdate()
-    {
         if(base.hasAuthority)
         {
+            // if(lookObj == null)
+            // {
+            //     lookObj = GameObject.FindGameObjectWithTag("objectSpawn").transform;
+            // }
+
             inputX = Input.GetAxis("Horizontal");
             inputY = Input.GetAxis("Vertical");
 
             move(inputY, inputX);
-            //updateHorizontal(horizontal);
+
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                action = true;
+            }
             attackMethod();
-        }
-        //h.transform.position = transform.position;
-        //if(transform.tag == "zombie")
-        //{
-            // inputY = Input.GetAxis("Vertical");
-            // inputX = Input.GetAxis("Horizontal");
-            // animator.SetFloat("InputY", inputY);
-            // animator.SetFloat("InputX", inputX);
 
-            // if(Input.GetMouseButtonDown(0))
-            // {
-            //     netAnimator.SetTrigger("Action");
-            // }
+            if(Input.GetKeyDown(KeyCode.I))
+            {
+                spawnItem();
+            }
 
-            // if(Input.GetKeyDown(KeyCode.X))
-            // {
-            //     netAnimator.SetTrigger("Death");
-            // }
+            findCubes();
 
-            // if(Input.GetKeyDown(KeyCode.Alpha1))
-            // {
-            //     netAnimator.SetTrigger("taunt1");
-            // }
-        //}
-    }
-    
-    void checkAttack()
-    {
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            attack = true;
         }
     }
 
     void move(float m, float t)
     {
-        float moveRate = 1f;
-        transform.Rotate(0, t * moveRate * Time.deltaTime, 0);
-        //transform.Translate(0, 0, m * moveRate * Time.deltaTime);
-        transform.position += new Vector3(m, 0f, 0f) * moveRate * Time.deltaTime;
+        //float moveRate = 1f;
+        float turnRate = 20f;
+
+        if(Input.GetKey(KeyCode.D))
+        {
+            transform.Rotate(0, t * turnRate * Time.deltaTime, 0);
+            Debug.Log("Turn Right");
+        }
+
+        if(Input.GetKey(KeyCode.A))
+        {
+            transform.Rotate(0, t * turnRate * Time.deltaTime, 0);
+            Debug.Log("Turn Left");
+        }
+
+        if(Input.GetKey(KeyCode.W))
+        {
+            //transform.position += Vector3.forward * moveRate * Time.deltaTime;
+        }
+
+        if(Input.GetKey(KeyCode.S))
+        {
+            //transform.position += Vector3.back * moveRate * Time.deltaTime;
+        }
+        //transform.position += new Vector3(m, 0f, 0f) * moveRate * Time.deltaTime;
+        //transform.position += Vector3.forward * moveRate * Time.deltaTime;
         updateAnim(m, t);
     }
 
@@ -114,17 +101,17 @@ public class netAnimation : NetworkBehaviour
 
     void attackMethod()
     {
-        if(!attack)
+        if(!action)
         {
             return;
         }
 
-        attack = true;
+        action = false;
 
-        string attackString = "Attack";
+        string actionString = "Action";
         if(netAnimator != null)
         {
-            netAnimator.SetTrigger(Animator.StringToHash(attackString));
+            netAnimator.SetTrigger(Animator.StringToHash(actionString));
         }
     }
 
@@ -145,6 +132,35 @@ public class netAnimation : NetworkBehaviour
             {
                 animator.SetLookAtWeight(0);
             }
+        }
+    }
+
+    [Command]
+    void spawnItem()
+    {
+        Vector3 spawnPosition = new Vector3(Random.Range(-5, 5), 0.05f, Random.Range(-5, 5));
+        GameObject newObject = Instantiate(objectPrefab.gameObject, spawnPosition, Quaternion.identity);
+        NetworkServer.Spawn(newObject);
+    }
+
+    void findCubes()
+    {
+        GameObject[] cubes = GameObject.FindGameObjectsWithTag("cube");
+        GameObject nearestCube = null;
+
+        if(cubes != null || cubes.Length > 0)
+        {
+            nearestCube = cubes[0];
+
+            foreach(GameObject cube in cubes)
+            {
+                if(Vector3.Distance(cube.transform.position, transform.position) < Vector3.Distance(nearestCube.transform.position, transform.position))
+                {
+                    nearestCube = cube;
+                }
+            }
+
+            lookObj = nearestCube.transform;
         }
     }
 

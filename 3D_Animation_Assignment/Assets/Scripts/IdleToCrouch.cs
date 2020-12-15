@@ -69,6 +69,16 @@ public class IdleToCrouch : MonoBehaviour
             {
                 animator.SetTrigger("taunt1");
             }
+
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                animator.SetTrigger("taunt2");
+            }
+
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                animator.SetTrigger("taunt3");
+            }
         }
     }
 
