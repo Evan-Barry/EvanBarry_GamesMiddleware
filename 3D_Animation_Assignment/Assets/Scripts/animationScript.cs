@@ -4,77 +4,102 @@ using UnityEngine;
 
 public class animationScript : MonoBehaviour
 {
-    public Animator robot_movements;
-    public Animator zombie_movements;
-    GameObject robot;
-    GameObject zombie;
 
+    public Animator animator;
+
+    public float inputX, inputY;
+
+    public GameObject hat;
+    GameObject h;
+
+    public GameObject head;
+
+    public bool ikActive = true;
+    //public Transform headObj = null;
+    public Transform lookObj = null;
+    
     // Start is called before the first frame update
     void Start()
     {
-        robot = GameObject.FindGameObjectWithTag("robot");
-        zombie = GameObject.FindGameObjectWithTag("zombie");
+        animator = GetComponent<Animator>();
 
-        robot_movements = robot.GetComponent<Animator>();
-        zombie_movements = zombie.GetComponent<Animator>();
+        if(name == "Player")
+        {
+            head = GameObject.Find("/Player/mixamorig:Hips/mixamorig:Spine/mixamorig:Spine1/mixamorig:Spine2/mixamorig:Neck/mixamorig:Head");
+        }
+
+        else if(name == "Zombie1")
+        {
+            head = GameObject.Find("/Zombie1/Base HumanPelvis/Base HumanSpine1/Base HumanSpine2/Base HumanRibcage/Base HumanNeck/Base HumanHead");
+        }
+
+        else if(name == "BaseHumanoidBotAvatar_Tpose")
+        {
+            head = GameObject.Find("/BaseHumanoidBotAvatar_Tpose/Root/Spine/Spine1/Spine2/Neck/Head");
+        }
+
+        h = Instantiate(hat, new Vector3(head.transform.position.x, head.transform.position.y + 0.1f, head.transform.position.z + 0.03f), Quaternion.identity) as GameObject;
+        h.transform.localScale = new Vector3(0.8f, 0.8f, 0.8f);
+        h.transform.parent = head.transform;
+        //headObj = h.transform;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey(KeyCode.W))
+        //h.transform.position = transform.position;
+        if(transform.tag == "Player")
         {
-            robot_movements.SetBool("isWalking", true);
-            zombie_movements.SetBool("isWalking", true);
-            //transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z + (1f * Time.deltaTime));
-            robot.transform.position += robot.transform.forward * Time.deltaTime;
-            zombie.transform.position += zombie.transform.forward * Time.deltaTime;
-        }
+            inputY = Input.GetAxis("Vertical");
+            inputX = Input.GetAxis("Horizontal");
+            animator.SetFloat("InputY", inputY);
+            animator.SetFloat("InputX", inputX);
+            
+            if(Input.GetMouseButtonDown(0))
+            {
+                animator.SetTrigger("Action");
+            }
 
-        else
-        {
-            robot_movements.SetBool("isWalking", false);
-            zombie_movements.SetBool("isWalking", false);
-        }
+            if(Input.GetKeyDown(KeyCode.X))
+            {
+                animator.SetTrigger("Death");
+            }
 
-        if(Input.GetKey(KeyCode.D))
-        {
-            //transform.rotation.y += (1f * Time.deltaTime);
-            //robot.transform.RotateAround(robot.transform.position, robot.transform.up, 90f * Time.deltaTime);
-            //zombie.transform.RotateAround(zombie.transform.position, zombie.transform.up, 90f * Time.deltaTime);
-            //robot_movements.SetBool("turnRight", true);
-        }
+            if(Input.GetKeyDown(KeyCode.Alpha1))
+            {
+                animator.SetTrigger("taunt1");
+            }
 
-        else
-        {
-            //robot_movements.SetBool("turnRight", false);
-        }
+            if(Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                animator.SetTrigger("taunt2");
+            }
 
-        if(Input.GetKey(KeyCode.A))
-        {
-            //transform.rotation.y -= (1f * Time.deltaTime);
-            //robot.transform.RotateAround(robot.transform.position, robot.transform.up, -90f * Time.deltaTime);
-            //zombie.transform.RotateAround(zombie.transform.position, zombie.transform.up, -90f * Time.deltaTime);
-            //robot_movements.SetBool("turnLeft", true);
+            if(Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                animator.SetTrigger("taunt3");
+            }
         }
-
-        else
-        {
-            //robot_movements.SetBool("turnLeft", false);
-        }
-
-        if(Input.GetKey(KeyCode.Space))
-        {
-            //Debug.Log("Jumping");
-            robot_movements.SetBool("explosion", true);
-            zombie_movements.SetBool("isAttacking", true);
-        }
-
-        else
-        {
-            robot_movements.SetBool("explosion", false);
-            zombie_movements.SetBool("isAttacking", false);
-        }
-     
     }
+
+    void OnAnimatorIK()
+    {
+        if(animator)
+        {
+            if(ikActive)
+            {
+                if(lookObj != null)
+                {
+                    animator.SetLookAtWeight(1);
+                    animator.SetLookAtPosition(lookObj.position);
+                }
+            }
+
+            else
+            {
+                animator.SetLookAtWeight(0);
+            }
+        }
+    }
+
 }
